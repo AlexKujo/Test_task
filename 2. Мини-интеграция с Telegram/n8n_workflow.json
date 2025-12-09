@@ -1,0 +1,214 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        432,
+        -176
+      ],
+      "id": "65fe56c0-e93a-48f6-891f-d3759b94a62e",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1YoYXfc3zU8vsb2BeqUOwIe4JyeyRr2hp",
+          "mode": "list",
+          "cachedResultName": "diamant_vision_test",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1YoYXfc3zU8vsb2BeqUOwIe4JyeyRr2hp"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -176
+      ],
+      "id": "01d58474-9eb4-4684-9294-17a9e46b9f11",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "IUfypZm8SHP9HuNi",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "116694154",
+        "text": "={{ $json.data }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        672,
+        -176
+      ],
+      "id": "4b12cd42-9e4a-4d92-98a7-510b1644e06f",
+      "name": "Send a text message",
+      "webhookId": "6378cd4c-6632-420d-b48b-ac72d7fee28e",
+      "credentials": {
+        "telegramApi": {
+          "id": "OoRcGy2STmInLwKE",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        208,
+        -176
+      ],
+      "id": "d99e4b4d-15c6-4581-b3bd-95a38a0ef0b3",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "IUfypZm8SHP9HuNi",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Webhook на добавление файла на Гугл диск",
+        "height": 272,
+        "width": 166,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        -288
+      ],
+      "id": "c985d40f-a832-4294-ba96-1ce1cdad6cac",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Скачиваем текстовый файл",
+        "height": 272,
+        "width": 150,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        186,
+        -288
+      ],
+      "id": "0c004d60-d9ea-4476-8bc2-140653d210db",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "Извлекаем содержимое файла",
+        "height": 272,
+        "width": 166,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        400,
+        -288
+      ],
+      "id": "0a9e38f1-bc7d-472a-9406-c45604ef9d47",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "Отправляем текст из файла в чат с пользователем",
+        "height": 272,
+        "width": 192,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        624,
+        -288
+      ],
+      "id": "0dda5467-9702-4f33-a40b-572ab684f803",
+      "name": "Sticky Note3"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1e79f50f-640f-4c7a-93b7-98b70f11b4e6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "34851010c0b6666ae04c86eee09a4c62175e4bcbeb4b3ef4e69017faa2c70521"
+  },
+  "id": "mwcRfJDOUSRGjp7J",
+  "tags": []
+}
